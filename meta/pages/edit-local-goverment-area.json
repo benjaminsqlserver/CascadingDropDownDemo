@@ -1,0 +1,232 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "type": "template-form",
+                  "name": "form0",
+                  "components": [
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Lga Name",
+                              "component": "LgaName",
+                              "name": "LgaNameLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "valueType": "string",
+                              "maxLength": 50,
+                              "type": "textbox",
+                              "name": "LgaName",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "value": "${localgovermentarea.LgaName}"
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "LgaNameRequiredValidator",
+                              "component": "LgaName",
+                              "text": "LgaName is required",
+                              "style": {
+                                "position": "absolute"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "State",
+                              "component": "StateID",
+                              "name": "StateIDLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "data": "${getStatesResult}",
+                              "textProperty": "StateName",
+                              "valueProperty": "StateID",
+                              "placeholder": "Choose State",
+                              "valueType": "int",
+                              "type": "dropdown",
+                              "name": "StateID",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "value": "${localgovermentarea.StateID}"
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "StateIDRequiredValidator",
+                              "component": "StateID",
+                              "text": "StateID is required",
+                              "style": {
+                                "position": "absolute"
+                              },
+                              "defaultValue": "0"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col offset-sm-3",
+                          "components": [
+                            {
+                              "type": "button",
+                              "buttonType": "submit",
+                              "icon": "save",
+                              "text": "Save",
+                              "buttonStyle": "primary"
+                            },
+                            {
+                              "type": "button",
+                              "buttonStyle": "light",
+                              "text": "Cancel",
+                              "events": {
+                                "click": [
+                                  {
+                                    "type": "close-popup"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "events": {
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to update LocalGovermentArea",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "conData.updateLocalGovermentArea",
+                        "parameters": [
+                          {
+                            "name": "LgaID",
+                            "value": "${parameters.LgaID}"
+                          },
+                          {
+                            "name": "LocalGovermentArea",
+                            "value": "${localgovermentarea}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "close-popup",
+                            "result": "${localgovermentarea}"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "itemType": "CascadingDropdownDemo.Models.ConData.LocalGovermentArea",
+                  "data": "${localgovermentarea}",
+                  "visible": "${localgovermentarea != null}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "conData.getLocalGovermentAreaByLgaID",
+        "parameters": [
+          {
+            "name": "LgaID",
+            "value": "${parameters.LgaID}"
+          }
+        ],
+        "then": [
+          {
+            "name": "localgovermentarea",
+            "type": "set",
+            "value": "${result}",
+            "valueType": "CascadingDropdownDemo.Models.ConData.LocalGovermentArea"
+          }
+        ],
+        "error": [],
+        "type": "invoke"
+      },
+      {
+        "name": "conData.getStates",
+        "parameters": [],
+        "then": [
+          {
+            "name": "getStatesResult",
+            "type": "set",
+            "value": "${result}",
+            "valueType": "IEnumerable<CascadingDropdownDemo.Models.ConData.State>"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Edit Local Goverment Area",
+  "layout": "Main"
+}

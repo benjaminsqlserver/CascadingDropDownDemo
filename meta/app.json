@@ -1,0 +1,32 @@
+{
+  "dataSources": [
+    "conData"
+  ],
+  "generator": "@radzen/blazor-server",
+  "https": false,
+  "layouts": [
+    "Login",
+    "Main"
+  ],
+  "logo": "",
+  "name": "CascadingDropdownDemo",
+  "navigation": [
+    "Local Goverment Areas",
+    "States",
+    "LGALoader"
+  ],
+  "pages": [
+    "Local Goverment Areas",
+    "Add Local Goverment Area",
+    "Edit Local Goverment Area",
+    "States",
+    "Add State",
+    "Edit State",
+    "LGALoader"
+  ],
+  "serverLang": "cs",
+  "serverProject": true,
+  "serverVersion": "3",
+  "startPage": "Local Goverment Areas",
+  "theme": "default"
+}

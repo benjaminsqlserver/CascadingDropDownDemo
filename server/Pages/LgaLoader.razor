@@ -1,0 +1,41 @@
+﻿@page "/lga-loader"
+@layout MainLayout
+@inherits CascadingDropdownDemo.Pages.LgaLoaderComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using CascadingDropdownDemo.Models.ConData
+<RadzenContent Container="main">
+  <ChildContent>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenTemplateForm Data="@localgovermentarea" TItem="CascadingDropdownDemo.Models.ConData.LocalGovermentArea" Visible="@(localgovermentarea != null)">
+          <ChildContent>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="StateID" style="width: 100%" Text="State:">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDropDown AllowClear="true" AllowFiltering="true" Data="@getStatesResult" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Choose State" style="display: block; width: 100%" TextProperty="StateName" @bind-Value="@(localgovermentarea.StateID)" ValueProperty="StateID" Name="StateID" Change="@StateIdChange">
+                </RadzenDropDown>
+                <RadzenRequiredValidator Component="StateID" DefaultValue="0" style="position: absolute" Text="State is required">
+                </RadzenRequiredValidator>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="ddlLGA" style="width: 100%" Text="LGA:">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDropDown AllowClear="true" AllowFiltering="true" Data="@getLGAResult" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="Choose LGA" style="display: block; width: 100%" TextProperty="LgaName" @bind-Value="@(localgovermentarea.LgaID)" ValueProperty="LgaID" Name="DdlLGA">
+                </RadzenDropDown>
+              </div>
+            </div>
+          </ChildContent>
+        </RadzenTemplateForm>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

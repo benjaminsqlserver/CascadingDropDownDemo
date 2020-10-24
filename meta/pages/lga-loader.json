@@ -1,0 +1,190 @@
+{
+  "components": [
+    {
+      "components": [
+        {
+          "components": [
+            {
+              "class": "col-md-12",
+              "components": [
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "component": "StateID",
+                              "name": "StateIDLabel",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "text": "State:",
+                              "type": "label"
+                            }
+                          ],
+                          "type": "col"
+                        },
+                        {
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "allowClear": true,
+                              "allowFiltering": true,
+                              "data": "${getStatesResult}",
+                              "events": {
+                                "change": [
+                                  {
+                                    "code": "await RepopulateLGAsAsync();",
+                                    "type": "execute"
+                                  }
+                                ]
+                              },
+                              "filterCaseSensitivity": "caseInsensitive",
+                              "name": "StateID",
+                              "placeholder": "Choose State",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "textProperty": "StateName",
+                              "type": "dropdown",
+                              "value": "${localgovermentarea.StateID}",
+                              "valueProperty": "StateID",
+                              "valueType": "int"
+                            },
+                            {
+                              "component": "StateID",
+                              "defaultValue": "0",
+                              "name": "StateIDRequiredValidator",
+                              "style": {
+                                "position": "absolute"
+                              },
+                              "text": "State is required",
+                              "type": "required-validator"
+                            }
+                          ],
+                          "type": "col"
+                        }
+                      ],
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "type": "row"
+                    },
+                    {
+                      "components": [
+                        {
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "component": "ddlLGA",
+                              "name": "label0",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "text": "LGA:",
+                              "type": "label"
+                            }
+                          ],
+                          "name": "col0",
+                          "type": "col"
+                        },
+                        {
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "allowClear": true,
+                              "allowFiltering": true,
+                              "data": "${getLGAResult}",
+                              "filterCaseSensitivity": "caseInsensitive",
+                              "name": "ddlLGA",
+                              "placeholder": "Choose LGA",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "template": "",
+                              "textProperty": "LgaName",
+                              "type": "dropdown",
+                              "value": "${localgovermentarea.LgaID}",
+                              "valueProperty": "LgaID",
+                              "valueType": "int"
+                            }
+                          ],
+                          "name": "col1",
+                          "type": "col"
+                        }
+                      ],
+                      "name": "row0",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "type": "row"
+                    }
+                  ],
+                  "data": "${localgovermentarea}",
+                  "events": {
+                    "submit": []
+                  },
+                  "itemType": "CascadingDropdownDemo.Models.ConData.LocalGovermentArea",
+                  "name": "form0",
+                  "type": "template-form",
+                  "visible": "${localgovermentarea != null}"
+                }
+              ],
+              "type": "col"
+            }
+          ],
+          "type": "row"
+        }
+      ],
+      "container": "main",
+      "type": "content"
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "conData.getStates",
+        "parameters": [],
+        "then": [
+          {
+            "name": "getStatesResult",
+            "type": "set",
+            "value": "${result}",
+            "valueType": "IEnumerable<CascadingDropdownDemo.Models.ConData.State>"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "localgovermentarea",
+        "type": "set",
+        "value": "new CascadingDropdownDemo.Models.ConData.LocalGovermentArea(){}",
+        "valueType": "CascadingDropdownDemo.Models.ConData.LocalGovermentArea"
+      },
+      {
+        "name": "conData.getFetchLgaByStateIds",
+        "parameters": [
+          {
+            "name": "StateID",
+            "value": "0"
+          }
+        ],
+        "then": [
+          {
+            "name": "getLGAResult",
+            "type": "set",
+            "value": "${result}",
+            "valueType": "IEnumerable<CascadingDropdownDemo.Models.ConData.FetchLgaByStateId>"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "layout": "Main",
+  "name": "LGALoader"
+}

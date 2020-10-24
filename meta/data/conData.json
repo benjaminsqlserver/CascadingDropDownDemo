@@ -1,0 +1,517 @@
+{
+  "info": {
+    "title": "conData",
+    "x-type": "odata",
+    "x-connector": "mssql",
+    "x-connector-version": 15
+  },
+  "definitions": {
+    "FetchLgaByStateId": {
+      "x-view": "sp",
+      "x-table": "dbo.FetchLGAByStateID",
+      "x-parameters": [
+        {
+          "name": "StateID",
+          "type": "integer"
+        }
+      ],
+      "resource": "FetchLgaByStateIds",
+      "required": [
+        "LgaID",
+        "LgaName"
+      ],
+      "properties": {
+        "LgaID": {
+          "x-key": true,
+          "x-nullable": false,
+          "type": "integer",
+          "x-virtual": true
+        },
+        "LgaName": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 100
+        }
+      }
+    },
+    "LocalGovermentArea": {
+      "x-table": "dbo.LocalGovermentAreas",
+      "resource": "LocalGovermentAreas",
+      "required": [
+        "LgaName",
+        "StateID"
+      ],
+      "properties": {
+        "LgaID": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "type": "integer"
+        },
+        "LgaName": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 50
+        },
+        "State": {
+          "type": "object",
+          "$ref": "#/definitions/State"
+        },
+        "StateID": {
+          "x-nullable": false,
+          "type": "integer",
+          "x-foreignKey": {
+            "parentTable": "States",
+            "parentEntityType": "State",
+            "type": "State",
+            "principalKey": "StateID",
+            "name": "State",
+            "textProperty": "StateName",
+            "navigationProperty": "LocalGovermentAreas"
+          }
+        }
+      }
+    },
+    "State": {
+      "x-table": "dbo.States",
+      "resource": "States",
+      "required": [
+        "StateName"
+      ],
+      "properties": {
+        "StateID": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "State",
+              "name": "LocalGovermentAreas",
+              "type": "LocalGovermentArea"
+            }
+          ]
+        },
+        "StateName": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 50
+        },
+        "CountryID": {
+          "type": "integer"
+        },
+        "LocalGovermentAreas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LocalGovermentArea"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/FetchLgaByStateIdsFunc(StateID={StateID})": {
+      "get": {
+        "operationId": "getFetchLgaByStateIds",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "StateID",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/FetchLgaByStateId"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/LocalGovermentAreas": {
+      "get": {
+        "operationId": "getLocalGovermentAreas",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/LocalGovermentArea"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createLocalGovermentArea",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "LocalGovermentArea",
+            "schema": {
+              "$ref": "#/definitions/LocalGovermentArea"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/LocalGovermentArea"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/States": {
+      "get": {
+        "operationId": "getStates",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/State"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createState",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "State",
+            "schema": {
+              "$ref": "#/definitions/State"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/State"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/LocalGovermentAreas({LgaID})": {
+      "delete": {
+        "operationId": "deleteLocalGovermentArea",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "LgaID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getLocalGovermentAreaByLgaID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "LgaID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/LocalGovermentArea"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateLocalGovermentArea",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "LgaID",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "LocalGovermentArea",
+            "schema": {
+              "$ref": "#/definitions/LocalGovermentArea"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "cancel": {
+        "operationId": "cancelLocalGovermentAreaChanges",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "LocalGovermentArea",
+            "schema": {
+              "$ref": "#/definitions/LocalGovermentArea"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/States({StateID})": {
+      "delete": {
+        "operationId": "deleteState",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "StateID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getStateByStateID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "StateID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/State"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateState",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "StateID",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "State",
+            "schema": {
+              "$ref": "#/definitions/State"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "cancel": {
+        "operationId": "cancelStateChanges",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "State",
+            "schema": {
+              "$ref": "#/definitions/State"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "basePath": "/odata/conData",
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ]
+}
